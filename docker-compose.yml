@@ -1,15 +1,30 @@
 version: "3.7"
 
 services:
-  postgres:
-    image: postgres:alpine
+
+  mysql:
+    image: mysql
+    container_name: mysql
     restart: always
-    container_name: sqlx
     ports:
-      - "7788:5432"
+      - "7788:3306"
+    networks:
+      - sqlx-network
     environment:
-      POSTGRES_USER: sqlx
-      POSTGRES_PASSWORD: sqlx
-      POSTGRES_DB: sqlx
-    volumes:
-      - ./init:/sqlx-entrypoint-initdb.d/
+      MYSQL_ROOT_PASSWORD: root
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    networks:
+      - sqlx-network
+    ports:
+      - "8877:80"
+    environment:
+      PMA_HOST: mysql
+    depends_on:
+      - mysql
+
+networks:
+  sqlx-network:
