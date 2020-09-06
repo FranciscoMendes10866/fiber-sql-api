@@ -1,11 +1,16 @@
 package main
 
-import "github.com/gofiber/fiber"
+import (
+	"github.com/fiber-sqlx/router"
+	"github.com/gofiber/cors"
+	"github.com/gofiber/fiber"
+	"github.com/gofiber/helmet"
+)
 
 func main() {
 	app := fiber.New()
-	app.Get("/", func(c *fiber.Ctx) {
-		c.Send("Hello, World!")
-	})
+	app.Use(cors.New())
+	app.Use(helmet.New())
+	router.SetupRoutes(app)
 	app.Listen(8899)
 }
