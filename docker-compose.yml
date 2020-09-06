@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres:alpine
+    restart: always
+    container_name: sqlx
+    ports:
+      - "7788:5432"
+    environment:
+      POSTGRES_USER: sqlx
+      POSTGRES_PASSWORD: sqlx
+      POSTGRES_DB: sqlx
+    volumes:
+      - ./init:/sqlx-entrypoint-initdb.d/
